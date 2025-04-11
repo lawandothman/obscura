@@ -5,7 +5,7 @@ CREATE TABLE submissions (
   name TEXT NOT NULL,
   start_time BIGINT NOT NULL,
   end_time BIGINT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW()
   )
 
   CREATE OR REPLACE FUNCTION get_submission_score(start_time BIGINT, end_time BIGINT) 
