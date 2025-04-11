@@ -7,7 +7,7 @@ app = 'lottie-hack-api'
 primary_region = 'lhr'
 
 [build]
-  dockerfile = "apps/api/Dockerfile"
+  dockerfile = "Dockerfile"
 
 [env]
   PORT = '8080'
@@ -24,3 +24,4 @@ primary_region = 'lhr'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
+
