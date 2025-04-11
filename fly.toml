@@ -8,7 +8,6 @@ primary_region = 'lhr'
 
 [build]
   dockerfile = "apps/api/Dockerfile"
-  context = "apps/api"
 
 [env]
   PORT = '8080'
