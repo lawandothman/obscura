@@ -3,6 +3,7 @@ use axum::{
     response::{IntoResponse, Response},
 };
 use thiserror::Error;
+use zip::result::ZipError;
 
 #[derive(Error, Debug)]
 pub enum AppError {
@@ -18,8 +19,17 @@ pub enum AppError {
     #[error("Server Error: {0}")]
     ServerError(#[from] std::io::Error),
 
+    #[error("HTTP Error: {0}")]
+    HttpError(#[from] axum::http::Error),
+
     #[error("Bad Request: {0}")]
     BadRequest(String),
+
+    #[error("JWT Error: {0}")]
+    JwtError(#[from] jsonwebtoken::errors::Error),
+
+    #[error("Zip Error: {0}")]
+    ZipError(#[from] ZipError),
 
     #[error("Lock Error")]
     LockError,
@@ -34,6 +44,9 @@ impl IntoResponse for AppError {
             AppError::ServerError(_) => (StatusCode::INTERNAL_SERVER_ERROR, "Server Error"),
             AppError::LockError => (StatusCode::INTERNAL_SERVER_ERROR, "Lock Error"),
             AppError::BadRequest(_) => (StatusCode::BAD_REQUEST, "Bad Request"),
+            AppError::JwtError(_) => (StatusCode::INTERNAL_SERVER_ERROR, "JWT Error"),
+            AppError::ZipError(_) => (StatusCode::INTERNAL_SERVER_ERROR, "Zip Error"),
+            AppError::HttpError(_) => (StatusCode::INTERNAL_SERVER_ERROR, "HTTP Error"),
         };
 
         (status, error_message).into_response()
