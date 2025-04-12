@@ -1,7 +1,3 @@
-mod config;
-mod db;
-mod error;
-
 use api::run_app;
 
 #[tokio::main]
