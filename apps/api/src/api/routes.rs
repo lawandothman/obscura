@@ -13,6 +13,6 @@ pub fn create_router(submission_service: Arc<SubmissionService>) -> Router {
     Router::new()
         .route("/", get(|| async { "👾" }))
         .route("/submissions", post(create_submission))
-        .route("/download/:id", get(download_challenge))
+        .route("/download/{id}", get(download_challenge))
         .with_state(submission_service)
 }
