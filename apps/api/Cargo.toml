@@ -4,6 +4,9 @@ version = "0.1.0"
 edition = "2024"
 default-run = "api"
 
+[workspace]
+members = [".", "migration"]
+
 [[bin]]
 name = "api"
 path = "src/main.rs"
@@ -15,6 +18,7 @@ path = "src/lib.rs"
 [dependencies]
 axum = "0.8.3"
 dotenv = "0.15.0"
+migration = { path = "migration" }
 jsonwebtoken = "9.3.1"
 openssl = { version = "0.10.72", features = ["vendored"] }
 sea-orm = { version = "1.1.8", features = ["sqlx-postgres", "runtime-tokio-native-tls", "macros", "debug-print"] }
