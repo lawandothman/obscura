@@ -28,7 +28,7 @@ export const Timer = ({ startTime, endTime }: { startTime: number; endTime: numb
   };
 
   return (
-    <div className="text-4xl font-mono font-bold text-center h-10" id="clock">
+    <div className="text-4xl font-mono font-bold text-center h-10 text-lottie-pink" id="clock">
       {time ? formatTime(time) : null}
     </div>
   );

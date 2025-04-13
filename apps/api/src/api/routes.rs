@@ -11,7 +11,7 @@ use super::{
     handlers::{
         download::download_challenge,
         hack::hack,
-        submissions::{create_submission, get_submission},
+        submissions::{create_submission, get_submission, submit_answer},
     },
     state::AppState,
 };
@@ -26,6 +26,7 @@ pub fn create_router(submission_service: Arc<SubmissionService>) -> Router {
         .route("/", get(|| async { "👾" }))
         .route("/submissions", post(create_submission))
         .route("/submissions/{id}", get(get_submission))
+        .route("/submissions/{id}/answer", post(submit_answer))
         .route("/download/{id}", get(download_challenge))
         .route("/hack", post(hack))
         .with_state(state)

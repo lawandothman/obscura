@@ -13,6 +13,7 @@ export const FinalForm = () => {
     // TODO: Implement submission logic
     setError(true);
   };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">

@@ -4,7 +4,9 @@ import { Timer } from '@/components/timer';
 import { env } from '@/env';
 import { submissionIdSchema } from '@/lib/schemas';
 import { Button } from '@workspace/ui/components/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@workspace/ui/components/card';
+import { Card, CardContent } from '@workspace/ui/components/card';
+import { TimerIcon } from 'lucide-react';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 export default async function GamePage({ params }: { params: Promise<{ submissionId: string }> }) {
@@ -24,28 +26,33 @@ export default async function GamePage({ params }: { params: Promise<{ submissio
   const submission = (await res.json()) as Submission;
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Hello {submission.name}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <p>
-              If you leave this page you may have to restart your challenge from scratch, so take
-              note of the URL if you want to come back to the challenge later.
-            </p>
-            <p>The clock is ticking... tick tock!</p>
-            <Timer startTime={submission.start_time} endTime={submission.end_time} />
-            <Button className="w-full" asChild>
-              <a href={`/api/download/${submission.id}`} download>
-                Download .zip File
-              </a>
-            </Button>
-            <FinalForm />
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    <Card className="backdrop-blur-sm bg-card/50 border-lottie-pink/20">
+      <CardContent className="space-y-6">
+        <div className="space-y-4">
+          <p>
+            If you leave this page, you may have to restart your challenge from scratch, so take
+            note of the URL if you want to come back to the challenge later.
+          </p>
+          <p className="flex items-center gap-2">
+            <TimerIcon className="w-5 h-5 text-lottie-pink" />
+            The clock is ticking... tick tock!
+          </p>
+          <Timer startTime={submission.start_time} endTime={submission.end_time} />
+          <Button
+            className="relative w-full h-16 text-xl font-semibold bg-lottie-pink hover:bg-lottie-pink/90 text-white transition-all duration-300 group flex items-center justify-center gap-3 cursor-pointer rounded-full"
+            asChild
+            disabled={!!submission.end_time}
+          >
+            <Link href={`/api/download/${submission.id}`} download>
+              <div className="flex items-center justify-center gap-2">
+                <span>Download .zip File</span>
+                <span className="text-lottie-pink">📦</span>
+              </div>
+            </Link>
+          </Button>
+          <FinalForm />
+        </div>
+      </CardContent>
+    </Card>
   );
 }
