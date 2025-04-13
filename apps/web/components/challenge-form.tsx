@@ -36,11 +36,7 @@ export function ChallengeForm() {
       setIsSubmitting(true);
       setError(null);
 
-      const result = await createSubmission(values.name);
-
-      if (result.error) {
-        setError(result.error);
-      }
+      await createSubmission(values.name);
     } catch (err) {
       setError('Failed to create submission. Please try again.');
     } finally {

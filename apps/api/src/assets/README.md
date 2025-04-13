@@ -43,7 +43,7 @@ Add up the answers to these questions:
 Somewhere inside one of the files is a JWT token. 
 
 1. Make sure that the JWT has not expired, and if it has, generate a new one.
-2. Use this JWT to make a POST request to `` using Bearer token auth.
+2. Use this JWT to make a POST request to `https://lottie-ctf.vercel.app/api/hack` using Bearer token auth.
 3. If you managed to do so correctly you should now have your final answer.
 4. Input the final answer into your browser to complete the challenge
    
