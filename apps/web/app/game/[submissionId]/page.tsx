@@ -7,13 +7,7 @@ import { redirect } from 'next/navigation';
 import { env } from '@/env';
 import type { Submission } from '@/app/types/submission';
 
-interface GamePageProps {
-  params: {
-    submissionId: string;
-  };
-}
-
-export default async function GamePage({ params }: GamePageProps) {
+export default async function GamePage({ params }: { params: Promise<{ submissionId: string }> }) {
   const { submissionId } = await params;
   const result = submissionIdSchema.safeParse(submissionId);
 
