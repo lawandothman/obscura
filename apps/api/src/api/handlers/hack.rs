@@ -32,7 +32,6 @@ pub async fn hack(
     let token = auth_header.trim_start_matches("Bearer ").trim();
 
     let mut validation = Validation::default();
-    validation.validate_exp = false;
     validation.insecure_disable_signature_validation();
 
     let decoded_header = decode::<Claims>(token, &DecodingKey::from_secret(&[]), &validation)
