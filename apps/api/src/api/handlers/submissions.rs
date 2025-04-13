@@ -1,6 +1,10 @@
 use std::sync::Arc;
 
-use axum::{Form, Json, extract::State, http::StatusCode};
+use axum::{
+    Form, Json,
+    extract::{Path, State},
+    http::StatusCode,
+};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -34,4 +38,19 @@ pub async fn create_submission(
             start_time: submission.start_time,
         }),
     ))
+}
+
+pub async fn get_submission(
+    State(submission_service): State<Arc<SubmissionService>>,
+    Path(id): Path<Uuid>,
+) -> Result<Json<SubmissionResponse>, AppError> {
+    println!("Getting submission with ID {}", id);
+
+    let submission = submission_service.get(id).await?;
+
+    Ok(Json(SubmissionResponse {
+        id: submission.id,
+        name: submission.name,
+        start_time: submission.start_time,
+    }))
 }
