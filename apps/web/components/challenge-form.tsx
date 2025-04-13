@@ -13,7 +13,6 @@ import {
   zodResolver,
 } from '@workspace/ui/components/form';
 import { Input } from '@workspace/ui/components/input';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { z } from 'zod';
 
@@ -24,7 +23,6 @@ const formSchema = z.object({
 export function ChallengeForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null | undefined>(null);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
