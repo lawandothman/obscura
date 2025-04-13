@@ -1,12 +1,11 @@
 'use server';
 
 import { env } from '@/env';
-import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 export async function createSubmission(name: string) {
   try {
     const formData = new URLSearchParams();
-
     formData.append('name', name);
 
     const response = await fetch(`${env.API_URL}/submissions`, {
@@ -18,12 +17,19 @@ export async function createSubmission(name: string) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to create submission');
+      const error = await response.text();
+      throw new Error(error || 'Failed to create submission');
     }
 
-    // Redirect to game page on success
-    redirect('/game');
+    const data = await response.json();
+
+    revalidatePath('/');
+
+    return { success: true, data };
   } catch (error) {
-    throw new Error('Failed to create submission');
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to create submission',
+    };
   }
 }

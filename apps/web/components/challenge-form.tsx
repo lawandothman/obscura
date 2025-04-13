@@ -1,5 +1,6 @@
 'use client';
 
+import { createSubmission } from '@/actions/create-submission';
 import { Button } from '@workspace/ui/components/button';
 import {
   Form,
@@ -12,7 +13,7 @@ import {
   zodResolver,
 } from '@workspace/ui/components/form';
 import { Input } from '@workspace/ui/components/input';
-import { createSubmission } from 'actions/create-submission';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { z } from 'zod';
 
@@ -22,7 +23,8 @@ const formSchema = z.object({
 
 export function ChallengeForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null | undefined>(null);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,7 +37,14 @@ export function ChallengeForm() {
     try {
       setIsSubmitting(true);
       setError(null);
-      await createSubmission(values.name);
+
+      const result = await createSubmission(values.name);
+
+      if (result.success) {
+        router.push('/game');
+      } else {
+        setError(result.error);
+      }
     } catch (err) {
       setError('Failed to create submission. Please try again.');
     } finally {
