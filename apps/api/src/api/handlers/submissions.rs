@@ -20,6 +20,7 @@ pub struct SubmissionResponse {
     id: Uuid,
     name: String,
     start_time: i64,
+    end_time: Option<i64>,
 }
 
 pub async fn create_submission(
@@ -36,6 +37,7 @@ pub async fn create_submission(
             id: submission.id,
             name: submission.name,
             start_time: submission.start_time,
+            end_time: None,
         }),
     ))
 }
@@ -52,5 +54,6 @@ pub async fn get_submission(
         id: submission.id,
         name: submission.name,
         start_time: submission.start_time,
+        end_time: submission.end_time,
     }))
 }

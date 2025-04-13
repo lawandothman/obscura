@@ -2,16 +2,21 @@
 
 import { useEffect, useState } from 'react';
 
-export const Timer = ({ startTime }: { startTime: number }) => {
+export const Timer = ({ startTime, endTime }: { startTime: number, endTime: number | null }) => {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
+    if (endTime) {
+      setTime(endTime - startTime);
+      return;
+    }
+
     const interval = setInterval(() => {
       setTime(Date.now() - startTime);
     }, 16);
 
     return () => clearInterval(interval);
-  }, [startTime]);
+  }, [startTime, endTime]);
 
   const formatTime = (ms: number) => {
     const minutes = Math.floor(ms / 60000);

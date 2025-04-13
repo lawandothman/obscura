@@ -36,7 +36,7 @@ export default async function GamePage({ params }: { params: Promise<{ submissio
               note of the URL if you want to come back to the challenge later.
             </p>
             <p>The clock is ticking... tick tock!</p>
-            <Timer startTime={submission.start_time} />
+            <Timer startTime={submission.start_time} endTime={submission.end_time} />
             <Button className="w-full" asChild>
               <a href="/download" download>
                 Download .zip File
