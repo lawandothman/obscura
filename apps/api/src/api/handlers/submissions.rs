@@ -28,6 +28,15 @@ pub struct SubmissionAnswerForm {
     answer: String,
 }
 
+#[derive(Serialize)]
+pub struct LeaderboardResponse {
+    id: Uuid,
+    name: String,
+    start_time: i64,
+    end_time: i64,
+    score: String,
+}
+
 pub async fn create_submission(
     State(state): State<Arc<AppState>>,
     Form(form): Form<NewSubmissionForm>,
@@ -96,4 +105,43 @@ pub async fn submit_answer(
             end_time: completed_submission.end_time,
         }),
     ))
+}
+
+pub async fn get_leaderboard(
+    State(state): State<Arc<AppState>>,
+) -> Result<Json<Vec<LeaderboardResponse>>, AppError> {
+    let leaderboard = state.submission_service.get_leaderboard().await?;
+
+    let response = leaderboard
+        .into_iter()
+        .filter_map(|submission| {
+            submission.end_time.map(|end_time| {
+                let duration_ms = end_time - submission.start_time;
+
+                let total_seconds = duration_ms / 1000;
+                let hours = total_seconds / 3600;
+                let minutes = (total_seconds % 3600) / 60;
+                let seconds = total_seconds % 60;
+                let ms = duration_ms % 1000;
+
+                let score = if hours > 0 {
+                    format!("{}:{:02}:{:02}.{:03}", hours, minutes, seconds, ms)
+                } else if minutes > 0 {
+                    format!("{}:{:02}.{:03}", minutes, seconds, ms)
+                } else {
+                    format!("{}.{:03}", seconds, ms)
+                };
+
+                LeaderboardResponse {
+                    id: submission.id,
+                    name: submission.name,
+                    start_time: submission.start_time,
+                    end_time,
+                    score,
+                }
+            })
+        })
+        .collect::<Vec<LeaderboardResponse>>();
+
+    Ok(Json(response))
 }
