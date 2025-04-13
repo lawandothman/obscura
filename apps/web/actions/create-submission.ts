@@ -1,5 +1,6 @@
 'use server';
 
+import type { Submission } from '@/app/types/submission';
 import { env } from '@/env';
 import { revalidatePath } from 'next/cache';
 
@@ -21,7 +22,7 @@ export async function createSubmission(name: string) {
       throw new Error(error || 'Failed to create submission');
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as Submission;
 
     revalidatePath('/');
 

@@ -41,7 +41,7 @@ export function ChallengeForm() {
       const result = await createSubmission(values.name);
 
       if (result.success) {
-        router.push('/game');
+        router.push(`/game/${result.data?.id}`);
       } else {
         setError(result.error);
       }
