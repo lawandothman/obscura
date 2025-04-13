@@ -12,9 +12,9 @@ const CHALLENGE_README: &str = include_str!("../assets/README.md");
 const CHARS: &[u8] = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Claims {
-    payload: i64,
-    exp: i64,
+pub struct Claims {
+    pub payload: i64,
+    pub exp: i64,
 }
 
 #[derive(Debug)]

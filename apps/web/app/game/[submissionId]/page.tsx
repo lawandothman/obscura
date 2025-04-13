@@ -1,11 +1,11 @@
+import type { Submission } from '@/app/types/submission';
 import { FinalForm } from '@/components/final-form';
 import { Timer } from '@/components/timer';
+import { env } from '@/env';
+import { submissionIdSchema } from '@/lib/schemas';
 import { Button } from '@workspace/ui/components/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@workspace/ui/components/card';
-import { submissionIdSchema } from '@/lib/schemas';
 import { redirect } from 'next/navigation';
-import { env } from '@/env';
-import type { Submission } from '@/app/types/submission';
 
 export default async function GamePage({ params }: { params: Promise<{ submissionId: string }> }) {
   const { submissionId } = await params;
@@ -21,7 +21,7 @@ export default async function GamePage({ params }: { params: Promise<{ submissio
     redirect('/');
   }
 
-  const submission = await res.json() as Submission;
+  const submission = (await res.json()) as Submission;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
@@ -48,4 +48,4 @@ export default async function GamePage({ params }: { params: Promise<{ submissio
       </Card>
     </div>
   );
-} 
+}

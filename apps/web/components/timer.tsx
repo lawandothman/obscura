@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-export const Timer = ({ startTime, endTime }: { startTime: number, endTime: number | null }) => {
+export const Timer = ({ startTime, endTime }: { startTime: number; endTime: number | null }) => {
   const [time, setTime] = useState<number | null>(null);
 
   useEffect(() => {

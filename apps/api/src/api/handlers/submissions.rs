@@ -8,7 +8,7 @@ use axum::{
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{error::AppError, services::submission_service::SubmissionService};
+use crate::{api::state::AppState, error::AppError};
 
 #[derive(Deserialize)]
 pub struct SubmissionForm {
@@ -24,12 +24,12 @@ pub struct SubmissionResponse {
 }
 
 pub async fn create_submission(
-    State(submission_service): State<Arc<SubmissionService>>,
+    State(state): State<Arc<AppState>>,
     Form(form): Form<SubmissionForm>,
 ) -> Result<(StatusCode, Json<SubmissionResponse>), AppError> {
     println!("Creating submission for {}", form.name);
 
-    let submission = submission_service.create(form.name).await?;
+    let submission = state.submission_service.create(form.name).await?;
 
     Ok((
         StatusCode::CREATED,
@@ -43,12 +43,12 @@ pub async fn create_submission(
 }
 
 pub async fn get_submission(
-    State(submission_service): State<Arc<SubmissionService>>,
+    State(state): State<Arc<AppState>>,
     Path(id): Path<Uuid>,
 ) -> Result<Json<SubmissionResponse>, AppError> {
     println!("Getting submission with ID {}", id);
 
-    let submission = submission_service.get(id).await?;
+    let submission = state.submission_service.get(id).await?;
 
     Ok(Json(SubmissionResponse {
         id: submission.id,

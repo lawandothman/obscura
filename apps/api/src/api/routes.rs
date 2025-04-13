@@ -5,18 +5,28 @@ use axum::{
     routing::{get, post},
 };
 
-use crate::services::submission_service::SubmissionService;
+use crate::services::{generator_service::GeneratorService, submission_service::SubmissionService};
 
-use super::handlers::{
-    download::download_challenge,
-    submissions::{create_submission, get_submission},
+use super::{
+    handlers::{
+        download::download_challenge,
+        hack::hack,
+        submissions::{create_submission, get_submission},
+    },
+    state::AppState,
 };
 
 pub fn create_router(submission_service: Arc<SubmissionService>) -> Router {
+    let state = Arc::new(AppState {
+        submission_service,
+        generator_service: Arc::new(GeneratorService::new()),
+    });
+
     Router::new()
         .route("/", get(|| async { "👾" }))
         .route("/submissions", post(create_submission))
         .route("/submissions/{id}", get(get_submission))
         .route("/download/{id}", get(download_challenge))
-        .with_state(submission_service)
+        .route("/hack", post(hack))
+        .with_state(state)
 }

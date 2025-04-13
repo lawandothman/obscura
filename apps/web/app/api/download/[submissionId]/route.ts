@@ -1,6 +1,9 @@
-import { env } from "@/env";
+import { env } from '@/env';
 
-export async function GET(request: Request, { params }: { params: Promise<{ submissionId: string }> }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ submissionId: string }> },
+) {
   const { submissionId } = await params;
   const response = await fetch(`${env.API_URL}/download/${submissionId}`);
 
@@ -10,5 +13,5 @@ export async function GET(request: Request, { params }: { params: Promise<{ subm
 
   return new Response(response.body, {
     headers: response.headers,
-  })
+  });
 }
