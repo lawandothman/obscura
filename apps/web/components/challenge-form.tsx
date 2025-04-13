@@ -22,7 +22,6 @@ const formSchema = z.object({
 
 export function ChallengeForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null | undefined>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,16 +31,10 @@ export function ChallengeForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      setIsSubmitting(true);
-      setError(null);
+    setIsSubmitting(true);
 
-      await createSubmission(values.name);
-    } catch (err) {
-      setError('Failed to create submission. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    await createSubmission(values.name);
+    setIsSubmitting(false);
   }
 
   return (
@@ -60,7 +53,6 @@ export function ChallengeForm() {
             </FormItem>
           )}
         />
-        {error && <p className="text-sm text-destructive">{error}</p>}
         <div className="flex gap-4">
           <Button type="submit" className="flex-1" disabled={isSubmitting}>
             {isSubmitting ? 'Starting...' : 'Start'}
