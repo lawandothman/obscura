@@ -38,7 +38,7 @@ export default async function GamePage({ params }: { params: Promise<{ submissio
             <p>The clock is ticking... tick tock!</p>
             <Timer startTime={submission.start_time} endTime={submission.end_time} />
             <Button className="w-full" asChild>
-              <a href="/download" download>
+              <a href={`/api/download/${submission.id}`} download>
                 Download .zip File
               </a>
             </Button>
