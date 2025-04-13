@@ -1,17 +1,17 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 
-export const Timer = () => {
+export const Timer = ({ startTime }: { startTime: number }) => {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
-    const startTime = Date.now();
     const interval = setInterval(() => {
       setTime(Date.now() - startTime);
     }, 16);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [startTime]);
 
   const formatTime = (ms: number) => {
     const minutes = Math.floor(ms / 60000);
