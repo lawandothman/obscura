@@ -1,10 +1,11 @@
 import type { Submission } from '@/app/types/submission';
-import { FinalForm } from '@/components/final-form';
+import {  SubmitAnswerForm } from '@/components/final-form';
 import { Timer } from '@/components/timer';
 import { env } from '@/env';
 import { submissionIdSchema } from '@/lib/schemas';
 import { Button } from '@workspace/ui/components/button';
 import { Card, CardContent } from '@workspace/ui/components/card';
+import { Separator } from '@workspace/ui/components/separator';
 import { TimerIcon } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -50,7 +51,8 @@ export default async function GamePage({ params }: { params: Promise<{ submissio
               </div>
             </Link>
           </Button>
-          <FinalForm />
+          <Separator className="bg-lottie-pink/20 my-10" />
+          <SubmitAnswerForm submissionId={submission.id} />
         </div>
       </CardContent>
     </Card>
