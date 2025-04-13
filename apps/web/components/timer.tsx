@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 export const Timer = ({ startTime, endTime }: { startTime: number, endTime: number | null }) => {
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState<number | null>(null);
 
   useEffect(() => {
     if (endTime) {
@@ -29,7 +29,7 @@ export const Timer = ({ startTime, endTime }: { startTime: number, endTime: numb
 
   return (
     <div className="text-4xl font-mono font-bold text-center" id="clock">
-      {formatTime(time)}
+      {time ? formatTime(time) : null}
     </div>
   );
 };
