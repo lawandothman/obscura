@@ -10,6 +10,15 @@
         "typescript": "5.8.2",
       },
     },
+    "apps/player": {
+      "name": "player",
+      "version": "1.0.0",
+      "devDependencies": {
+        "@types/node": "^20",
+        "@workspace/typescript-config": "workspace:*",
+        "typescript": "^5.7.3",
+      },
+    },
     "apps/web": {
       "name": "web",
       "version": "0.0.1",
@@ -569,6 +578,8 @@
     "picocolors": ["picocolors@1.0.1", "", {}, "sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew=="],
 
     "picomatch": ["picomatch@2.3.1", "", {}, "sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA=="],
+
+    "player": ["player@workspace:apps/player"],
 
     "postcss": ["postcss@8.5.3", "", { "dependencies": { "nanoid": "^3.3.8", "picocolors": "^1.1.1", "source-map-js": "^1.2.1" } }, "sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A=="],
 

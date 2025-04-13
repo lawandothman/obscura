@@ -18,33 +18,15 @@ l::::::l oo:::::::::::oo         tt:::::::::::tt    tt:::::::::::tti::::::i  ee:
 llllllll   ooooooooooo             ttttttttttt        ttttttttttt  iiiiiiii    eeeeeeeeeeeeee 
 
 
-===============================================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
                                     📝 Instructions
-===============================================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📁 All files and directories mentioned below are INSIDE the `challenge/` directory.
 
-⚠️ Do **NOT** count the README or the `/challenge` directory itself.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔍 PART 1: Decode the numbers!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Get ready for a little file exploration! 🕵️‍♀️
-Add up the answers to these questions: 
-1. How many files are there in total (including dotfiles)? 
-2. How many directories are there in total (excluding the challenge directory)?
-3. How many dotfiles are there?
-4. How many times does the lowercase string "lottie" appear in a file?
-5. Sum all the 4 values in order to get the JWT key for Part 2
-
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔍 PART 2: Crack the code!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Somewhere inside one of the files is a JWT token. 
 
 1. Make sure that the JWT has not expired, and if it has, generate a new one.
 2. Use this JWT to make a POST request to `https://lottie-ctf.vercel.app/api/hack` using Bearer token auth.
 3. If you managed to do so correctly you should now have your final answer.
 4. Input the final answer into your browser to complete the challenge
-   
 

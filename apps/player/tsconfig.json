@@ -1,0 +1,5 @@
+{
+  "extends": "@workspace/typescript-config/base.json",
+  "include": ["index.ts"],
+  "exclude": ["node_modules"]
+}
