@@ -1,17 +1,42 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 
 import '@workspace/ui/globals.css';
 import { Providers } from '@/components/providers';
+import type { Metadata } from 'next';
 
-const fontSans = Geist({
-  subsets: ['latin'],
-  variable: '--font-sans',
+const elza = localFont({
+  src: [
+    {
+      path: './fonts/elza_400.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: './fonts/elza_500.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: './fonts/elza_600.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: './fonts/elza_700.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: './fonts/elza_900.woff2',
+      weight: '900',
+      style: 'normal',
+    },
+  ],
 });
 
-const fontMono = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-});
+export const metadata: Metadata = {
+  title: 'Lottie Capture the Flag',
+};
 
 export default function RootLayout({
   children,
@@ -20,7 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}>
+      <body className={`${elza.className} font-sans antialiased `}>
         <Providers>{children}</Providers>
       </body>
     </html>
