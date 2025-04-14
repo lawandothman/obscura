@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import '@workspace/ui/globals.css';
 import { Providers } from '@/components/providers';
 import type { Metadata } from 'next';
+import { LeaderboardButton } from '@/components/leaderboard-button';
 
 const elza = localFont({
   src: [
@@ -53,6 +54,7 @@ export default function RootLayout({
             <div className="absolute -top-24 -left-24 w-96 h-96 bg-lottie-pink rounded-full opacity-10 blur-3xl" />
             <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-lottie-pink rounded-full opacity-10 blur-3xl" />
 
+            <LeaderboardButton />
             <div className="container mx-auto px-4 py-16 max-w-3xl relative">{children}</div>
           </div>
         </Providers>
