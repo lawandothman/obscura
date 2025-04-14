@@ -73,14 +73,6 @@ export default async function LeaderboardPage() {
                   >
                     <Timer className="w-3 h-3 mr-1" /> {leaderboard[1]?.score}
                   </Badge>
-
-
-
-
-
-
-
-
                 </div>
               </div>
             )}
@@ -126,39 +118,12 @@ export default async function LeaderboardPage() {
                     <Timer className="w-3 h-3 mr-1" /> {leaderboard[2]?.score}
                   </Badge>
                 </div>
-
               </div>
             )}
           </div>
         )}
 
         <Separator className="bg-lottie-pink/20 my-8" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         {/* Full leaderboard table */}
         <div className="rounded-md border border-lottie-pink/20 overflow-hidden">
