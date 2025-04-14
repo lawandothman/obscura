@@ -5,9 +5,10 @@ async fn main() {
     match run_app().await {
         Ok(app) => {
             let listener = tokio::net::TcpListener::bind("[::]:8080").await.unwrap();
-            axum::serve(listener, app.into_make_service())
-                .await
-                .unwrap();
+            println!("🚀 Listening on [::]:8080");
+            axum::serve(listener, app).await.unwrap();
+
+            println!("🚀 Server running [::]:8080");
         }
         Err(e) => {
             eprintln!("Application error: {}", e);

@@ -7,17 +7,17 @@ use axum::{
 };
 use uuid::Uuid;
 
-use crate::{api::state::AppState, error::AppError};
+use crate::{error::AppError, services::services_provider::ServicesProvider};
 
 pub async fn download_challenge(
     Path(id): Path<Uuid>,
-    State(state): State<Arc<AppState>>,
+    State(provider): State<Arc<ServicesProvider>>,
 ) -> Result<Response<Body>, AppError> {
-    let submission = state.submission_service.get(id).await?;
+    let submission = provider.submission_service.get(id).await?;
 
     println!("Requesting download for {}", submission.name);
 
-    let challenge_file = state
+    let challenge_file = provider
         .generator_service
         .generate_challenge_file(submission.start_time)?;
 

@@ -4,7 +4,10 @@ use axum::{extract::State, http::HeaderMap};
 use jsonwebtoken::{DecodingKey, Validation, decode};
 use text_to_ascii_art::{Alignment, align, to_art};
 
-use crate::{api::state::AppState, error::AppError, services::generator_service::Claims};
+use crate::{
+    error::AppError,
+    services::{generator_service::Claims, services_provider::ServicesProvider},
+};
 
 fn response_ascii(num: i32) -> String {
     let ascii_art = match to_art(num.to_string(), "standard", 0, 0, 0) {
@@ -17,7 +20,7 @@ fn response_ascii(num: i32) -> String {
 
 pub async fn hack(
     headers: HeaderMap,
-    State(state): State<Arc<AppState>>,
+    State(provider): State<Arc<ServicesProvider>>,
 ) -> Result<String, AppError> {
     let auth_header = headers
         .get("authorization")
@@ -40,7 +43,7 @@ pub async fn hack(
             AppError::BadRequest("Missing or wrong payload".to_string())
         })?;
 
-    let jwt_key = state
+    let jwt_key = provider
         .generator_service
         .generate_jwt_key(decoded_header.claims.payload)
         .to_string();
@@ -52,7 +55,7 @@ pub async fn hack(
     )
     .map_err(|_| AppError::BadRequest(format!("{} attempts left", rand::random::<u8>())))?;
 
-    let solution = state
+    let solution = provider
         .generator_service
         .generate_solution_value(decoded_header.claims.payload);
 
