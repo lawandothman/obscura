@@ -60,7 +60,10 @@ export default async function LeaderboardPage() {
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-silver text-white text-xs font-bold px-3 py-1 rounded-full">
                   2nd Place
                 </div>
-                <h3 className="font-bold text-lg text-center line-clamp-1">
+                <h3
+                  className="font-bold text-lg text-center truncate w-full max-w-[180px]"
+                  title={leaderboard[1]?.name}
+                >
                   {leaderboard[1]?.name}
                 </h3>
                 <div className="mt-2 flex items-center justify-center">
@@ -80,7 +83,12 @@ export default async function LeaderboardPage() {
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
                 Winner 👑
               </div>
-              <h3 className="font-bold text-xl text-center line-clamp-1">{leaderboard[0]?.name}</h3>
+              <h3
+                className="font-bold text-xl text-center truncate w-full max-w-[200px]"
+                title={leaderboard[0]?.name}
+              >
+                {leaderboard[0]?.name}
+              </h3>
               <div className="mt-2 flex items-center justify-center">
                 <Badge className="bg-amber-500/10 border-amber-400/30 text-foreground">
                   <Timer className="w-3 h-3 mr-1" /> {leaderboard[0]?.score}
@@ -96,7 +104,10 @@ export default async function LeaderboardPage() {
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-bronze text-white text-xs font-bold px-3 py-1 rounded-full">
                   3rd Place
                 </div>
-                <h3 className="font-bold text-lg text-center line-clamp-1">
+                <h3
+                  className="font-bold text-lg text-center truncate w-full max-w-[180px]"
+                  title={leaderboard[2]?.name}
+                >
                   {leaderboard[2]?.name}
                 </h3>
                 <div className="mt-2 flex items-center justify-center">
@@ -169,7 +180,11 @@ export default async function LeaderboardPage() {
                         return <span className="text-muted-foreground">{index + 1}</span>;
                       })()}
                     </TableCell>
-                    <TableCell className="font-medium">{entry.name}</TableCell>
+                    <TableCell className="font-medium max-w-[200px]">
+                      <div className="truncate" title={entry.name}>
+                        {entry.name}
+                      </div>
+                    </TableCell>
                     <TableCell className="text-right">
                       <Badge
                         variant={index < 3 ? 'default' : 'outline'}

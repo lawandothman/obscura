@@ -1,5 +1,6 @@
 use std::io::Write;
 
+use base64::Engine;
 use jsonwebtoken::{EncodingKey, Header, encode};
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha8Rng;
@@ -129,6 +130,8 @@ impl GeneratorService {
             filenames.push(filename);
         }
 
+        let jwt_index = (seed.solution % seed.num_files) as usize;
+
         for (i, filename) in filenames.iter().enumerate() {
             let parent = self.seeded_random_element(&mut rng, &directories);
             let path = format!("{}{}", parent, filename);
@@ -137,24 +140,32 @@ impl GeneratorService {
 
             let mut contents = String::new();
 
-            match i.cmp(&(seed.num_lottie_files as usize)) {
-                std::cmp::Ordering::Less => {
-                    let num_lines = rng.random_range(30..50);
-                    for _ in 0..num_lines {
-                        contents.push_str(&self.seeded_random_id(&mut rng, 80));
-                        contents.push('\n');
-                    }
-                    contents.push_str("\nlottie\n");
+            if i == jwt_index {
+                contents = self.generate_jwt(seed_value)?;
+            } else {
+                let num_lines = rng.random_range(30..50);
+
+                for _ in 0..num_lines {
+                    contents.push_str(&self.seeded_random_id(&mut rng, 80));
+                    contents.push('\n');
                 }
-                std::cmp::Ordering::Equal => {
-                    contents = self.generate_jwt(seed_value)?;
+
+                if i < seed.num_lottie_files as usize {
+                    contents.push_str("\nlottie\n"); // keep red herring
                 }
-                std::cmp::Ordering::Greater => {
-                    let num_lines = rng.random_range(30..50);
-                    for _ in 0..num_lines {
-                        contents.push_str(&self.seeded_random_id(&mut rng, 80));
-                        contents.push('\n');
-                    }
+
+                if rng.random_bool(0.015) {
+                    let fake_token = format!(
+                        "{}.{}.{}",
+                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+                        base64::engine::general_purpose::URL_SAFE_NO_PAD
+                            .encode(self.seeded_random_id(&mut rng, 32)),
+                        base64::engine::general_purpose::URL_SAFE_NO_PAD
+                            .encode(self.seeded_random_id(&mut rng, 32)),
+                    );
+
+                    println!("Fake token: {}", fake_token);
+                    contents.push_str(&format!("\n{}\n", fake_token));
                 }
             }
 

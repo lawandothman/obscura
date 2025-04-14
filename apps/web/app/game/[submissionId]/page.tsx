@@ -1,5 +1,5 @@
 import type { Submission } from '@/app/types/submission';
-import {  SubmitAnswerForm } from '@/components/final-form';
+import { SubmitAnswerForm } from '@/components/final-form';
 import { Timer } from '@/components/timer';
 import { env } from '@/env';
 import { submissionIdSchema } from '@/lib/schemas';
@@ -26,6 +26,35 @@ export default async function GamePage({ params }: { params: Promise<{ submissio
 
   const submission = (await res.json()) as Submission;
 
+  if (submission.end_time) {
+    return (
+      <Card className="backdrop-blur-sm bg-card/50 border-lottie-pink/20">
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <p>Congratulations {submission.name}! 🎉</p>
+            <p className="flex items-center gap-2">
+              <TimerIcon className="w-5 h-5 text-lottie-pink" />
+              You finished the challenge in
+            </p>
+            <Timer startTime={submission.start_time} endTime={submission.end_time} />
+            <Button
+              className="relative w-full h-16 text-xl font-semibold bg-lottie-pink hover:bg-lottie-pink/90 text-white transition-all duration-300 group flex items-center justify-center gap-3 cursor-pointer rounded-full"
+              asChild
+              disabled={!!submission.end_time}
+            >
+              <Link href="/leaderboard">
+                <div className="flex items-center justify-center gap-2">
+                  <span>View leaderboard</span>
+                  <span className="text-lottie-pink">📦</span>
+                </div>
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="backdrop-blur-sm bg-card/50 border-lottie-pink/20">
       <CardContent className="space-y-6">
@@ -46,8 +75,8 @@ export default async function GamePage({ params }: { params: Promise<{ submissio
           >
             <Link href={`/api/download/${submission.id}`} download>
               <div className="flex items-center justify-center gap-2">
-                <span>Download .zip File</span>
-                <span className="text-lottie-pink">📦</span>
+                <span>Download .zip file</span>
+                <span className="text-xl">📦</span>
               </div>
             </Link>
           </Button>
