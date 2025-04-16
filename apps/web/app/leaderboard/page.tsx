@@ -33,6 +33,7 @@ async function getLeaderboard(): Promise<LeaderboardEntry[]> {
 
 export default async function LeaderboardPage() {
   const leaderboard = await getLeaderboard();
+  console.log(leaderboard);
 
   return (
     <Card className="backdrop-blur-sm bg-card/50 border-lottie-pink/20">

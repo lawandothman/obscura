@@ -1,10 +1,7 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use sea_orm::ActiveValue::Set;
-use sea_orm::sea_query::Expr;
-use sea_orm::{
-    ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, Order, QueryFilter, QueryOrder,
-};
+use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 use uuid::Uuid;
 
 use crate::error::AppError;
@@ -71,10 +68,6 @@ impl SubmissionService {
     pub async fn get_leaderboard(&self) -> Result<Vec<Submission>, AppError> {
         Submissions::find()
             .filter(Column::EndTime.is_not_null())
-            .order_by(
-                Expr::col(Column::EndTime).sub(Expr::col(Column::StartTime)),
-                Order::Asc,
-            )
             .all(&self.db)
             .await
             .map_err(AppError::DatabaseError)

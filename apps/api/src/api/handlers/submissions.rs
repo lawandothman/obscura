@@ -1,4 +1,6 @@
-use std::sync::Arc;
+use std::{collections::HashMap, sync::Arc};
+
+use crate::models::submission::Model as Submission;
 
 use axum::{
     Form, Json,
@@ -116,38 +118,59 @@ pub async fn submit_answer(
 pub async fn get_leaderboard(
     State(provider): State<Arc<ServicesProvider>>,
 ) -> Result<Json<Vec<LeaderboardResponse>>, AppError> {
-    let leaderboard = provider.submission_service.get_leaderboard().await?;
+    let submissions = provider.submission_service.get_leaderboard().await?;
 
-    let response = leaderboard
-        .into_iter()
-        .filter_map(|submission| {
-            submission.end_time.map(|end_time| {
-                let duration_ms = end_time - submission.start_time;
+    let mut best_by_name: HashMap<String, Submission> = HashMap::new();
 
-                let total_seconds = duration_ms / 1000;
-                let hours = total_seconds / 3600;
-                let minutes = (total_seconds % 3600) / 60;
-                let seconds = total_seconds % 60;
-                let ms = duration_ms % 1000;
+    for submission in submissions {
+        if let Some(end_time) = submission.end_time {
+            let duration = end_time - submission.start_time;
 
-                let score = if hours > 0 {
-                    format!("{}:{:02}:{:02}.{:03}", hours, minutes, seconds, ms)
-                } else if minutes > 0 {
-                    format!("{}:{:02}.{:03}", minutes, seconds, ms)
-                } else {
-                    format!("{}.{:03}", seconds, ms)
-                };
-
-                LeaderboardResponse {
-                    id: submission.id,
-                    name: submission.name,
-                    start_time: submission.start_time,
-                    end_time,
-                    score,
+            if let Some(existing) = best_by_name.get(&submission.name) {
+                if let Some(existing_end) = existing.end_time {
+                    let existing_duration = existing_end - existing.start_time;
+                    if duration < existing_duration {
+                        best_by_name.insert(submission.name.clone(), submission);
+                    }
                 }
-            })
+            } else {
+                best_by_name.insert(submission.name.clone(), submission);
+            }
+        }
+    }
+
+    let response = best_by_name
+        .into_values()
+        .map(|submission| {
+            let end_time = submission.end_time.unwrap();
+            let duration_ms = end_time - submission.start_time;
+
+            let total_seconds = duration_ms / 1000;
+            let hours = total_seconds / 3600;
+            let minutes = (total_seconds % 3600) / 60;
+            let seconds = total_seconds % 60;
+            let ms = duration_ms % 1000;
+
+            let score = if hours > 0 {
+                format!("{}:{:02}:{:02}.{:03}", hours, minutes, seconds, ms)
+            } else if minutes > 0 {
+                format!("{}:{:02}.{:03}", minutes, seconds, ms)
+            } else {
+                format!("{}.{:03}", seconds, ms)
+            };
+
+            LeaderboardResponse {
+                id: submission.id,
+                name: submission.name,
+                start_time: submission.start_time,
+                end_time,
+                score,
+            }
         })
         .collect::<Vec<LeaderboardResponse>>();
+
+    let mut response = response;
+    response.sort_by_key(|item| item.end_time - item.start_time);
 
     Ok(Json(response))
 }
